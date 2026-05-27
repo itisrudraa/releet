@@ -1,5 +1,5 @@
 /// <reference types="chrome"/>
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactDOM from "react-dom/client";
 
 function getProblemData() {
@@ -24,6 +24,16 @@ function SaveButton() {
 
   async function saveProblem() {
   const problemData = getProblemData();
+  if (!problemData) {
+
+    setButtonText("Loading Problem...");
+
+    setTimeout(() => {
+      setButtonText("Save for Revision");
+    }, 2000);
+
+    return;
+  }
 
   const result = await chrome.storage.local.get(
     "savedProblems"
@@ -92,13 +102,28 @@ const reactRoot = ReactDOM.createRoot(root);
 
 function checkSubmissionResult() {
 
-  const hasWrongAnswer = document.body.innerText.includes("Wrong Answer");
+  const hasWrongAnswer =
+    document.body.innerText.includes(
+      "Wrong Answer"
+    );
 
-  if (hasWrongAnswer) {
+  const problemData = getProblemData();
+
+  const isProblemReady =
+    problemData?.title &&
+    problemData?.difficulty;
+
+  if (
+    hasWrongAnswer &&
+    isProblemReady
+  ) {
+
     reactRoot.render(
       <SaveButton />
     );
+
   } else {
+
     reactRoot.render(
       <></>
     );
