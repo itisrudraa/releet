@@ -1,9 +1,69 @@
-import React from "react";
+/// <reference types="chrome"/>
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 
+function getProblemData() {
+  const titleElement = document.querySelector(
+    'div.text-title-large a'
+  );
+  const difficultyElement = document.querySelector(
+    '[class*="text-difficulty-"]'
+  );
+  return {
+    title: titleElement?.textContent,
+    difficulty: difficultyElement?.textContent,
+    url: window.location.href,
+    savedAt: new Date().toISOString()
+  };
+}
+
 function SaveButton() {
+
+  const [buttonText, setButtonText] =
+  useState("Save for Revision");
+
+  async function saveProblem() {
+  const problemData = getProblemData();
+
+  const result = await chrome.storage.local.get(
+    "savedProblems"
+  );
+
+  const savedProblems = (result.savedProblems || []) as any[];
+
+const alreadySaved = savedProblems.some(
+  (problem) => problem.url === problemData.url
+);
+
+if (alreadySaved) {
+  setButtonText("Already Saved ⚠️");
+
+  setTimeout(() => {
+    setButtonText("Save for Revision");
+  }, 2000);
+
+  return;
+}
+savedProblems.push(problemData);
+
+  await chrome.storage.local.set({
+    savedProblems: savedProblems
+  });
+
+  const updatedData =
+    await chrome.storage.local.get("savedProblems");
+
+      console.log(updatedData);
+      setButtonText("Saved ✅");
+
+      setTimeout(() => {
+        setButtonText("Save for Revision");
+      }, 2000);
+  }
+
   return (
     <button
+      onClick={saveProblem}
       style={{
         position: "fixed",
         bottom: "30px",
@@ -20,7 +80,7 @@ function SaveButton() {
         transition: "all 0.2s ease"
       }}
     >
-      Save for Revision
+      {buttonText}
     </button>
   );
 }
