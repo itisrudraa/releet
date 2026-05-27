@@ -28,6 +28,31 @@ function SaveButton() {
 const root = document.createElement("div");
 document.body.appendChild(root);
 
-ReactDOM.createRoot(root).render(
-  <SaveButton />
-);
+const reactRoot = ReactDOM.createRoot(root);
+
+function checkSubmissionResult() {
+
+  const hasWrongAnswer = document.body.innerText.includes("Wrong Answer");
+
+  if (hasWrongAnswer) {
+    reactRoot.render(
+      <SaveButton />
+    );
+  } else {
+    reactRoot.render(
+      <></>
+    );
+
+  }
+}
+
+const observer = new MutationObserver(() => {
+  checkSubmissionResult();
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
+checkSubmissionResult();
