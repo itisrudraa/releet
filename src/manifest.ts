@@ -8,7 +8,9 @@ export default defineManifest({
 
   permissions: [
     "storage",
-    "tabs"
+    "tabs",
+    "alarms",
+    "notifications"
   ],
 
   host_permissions: [
@@ -21,6 +23,12 @@ export default defineManifest({
   },
 
   options_page: "index.html",
+
+  background: {
+  service_worker:
+    "src/background/background.ts",
+  type: "module",
+},
 
   content_scripts: [
     {
