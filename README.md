@@ -110,7 +110,7 @@ Quickly find problems by:
 
 ## Installation
 
-### Clone Repository
+### Option 1 Clone Repository (For Developers)
 
 ```bash
 git clone https://github.com/itisrudraa/releet.git
@@ -141,6 +141,22 @@ chrome://extensions
 3. Enable Developer Mode
 4. Click Load Unpacked
 5. Select the build folder
+
+### Option 2 (Recommended)
+
+1. Download the latest release from the GitHub Releases page.
+2. Extract the ZIP file.
+3. Open Chrome and visit:
+
+```text
+chrome://extensions
+```
+
+4. Enable Developer Mode.
+5. Click Load unpacked.
+6. Select the extracted ReLeet folder.
+
+Done 🎉
 
 ---
 
