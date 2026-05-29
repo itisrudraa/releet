@@ -167,20 +167,77 @@ function SaveButton() {
   }
 
   async function handleRevisionSave(days?: number) {
+  try {
     const finalDays = days || selectedDays;
+
     const problemData = getProblemData();
-    if (!problemData) return;
-    const result = await chrome.storage.local.get("savedProblems");
-    const savedProblems = (result.savedProblems || []) as any[];
-    const nextReviewDate = new Date(Date.now() + finalDays * 24 * 60 * 60 * 1000).toISOString();
-    const updatedProblem = { ...problemData, revised: false, reviseAfterDays: finalDays, nextReviewDate };
+    if (!problemData) {
+      console.error("Problem data not found");
+      return;
+    }
+
+    if (!chrome?.storage?.local) {
+      console.error("Chrome storage unavailable");
+      return;
+    }
+
+    const result =
+      await chrome.storage.local.get(
+        "savedProblems"
+      );
+
+    const savedProblems =
+      (result.savedProblems || []) as any[];
+
+    const nextReviewDate =
+      new Date(
+        Date.now() +
+          finalDays *
+            24 *
+            60 *
+            60 *
+            1000
+      ).toISOString();
+
+    const updatedProblem = {
+      ...problemData,
+      revised: false,
+      reviseAfterDays: finalDays,
+      nextReviewDate,
+    };
+
     savedProblems.push(updatedProblem);
-    await chrome.storage.local.set({ savedProblems });
+
+    await chrome.storage.local.set({
+      savedProblems,
+    });
+
     setButtonText("Saved");
     setButtonState("saved");
     setShowOptions(false);
-    setTimeout(() => { setButtonText("Save for Revision"); setButtonState("default"); }, 2500);
+
+    setTimeout(() => {
+      setButtonText(
+        "Save for Revision"
+      );
+      setButtonState("default");
+    }, 2500);
+  } catch (err) {
+    console.error(
+      "Save failed:",
+      err
+    );
+
+    setButtonText("Error");
+    setButtonState("default");
+
+    setTimeout(() => {
+      setButtonText(
+        "Save for Revision"
+      );
+    }, 2500);
   }
+}
 
   const mainBtnStyle = {
     ...styles.btn,
