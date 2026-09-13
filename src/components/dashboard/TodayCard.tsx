@@ -5,17 +5,23 @@ import DiffBadge from "../common/DiffBadge";
 
 type Props = { problem: Problem; onToggle: (url: string) => void; onSnooze: (url: string, days: number) => void };
 
+const difficultyBorder: Record<string, string> = {
+  Easy: "border-l-green-400",
+  Medium: "border-l-amber-400",
+  Hard: "border-l-red-400",
+};
+
 export default function TodayCard({ problem, onToggle, onSnooze }: Props) {
   const [hovered, setHovered] = useState(false);
   const daysUntil = problem.nextReviewDate ? getDaysUntil(problem.nextReviewDate) : null;
   const overdue = daysUntil !== null && daysUntil < 0;
+  const borderClass = difficultyBorder[problem.difficulty] ?? "border-l-slate-400";
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`flex items-center justify-between gap-3.5 rounded-lg border border-l-[3px] p-[13px_16px] transition-all duration-150 ${hovered ? "bg-[#202020] border-[#2a2a4a]" : "bg-releet-card border-[#1a1a30]"}`}
-      style={{ borderLeftColor: getComputedStyle(document.documentElement).getPropertyValue("--difficulty-color") || "#94a3b8" }}
+      className={`flex items-center justify-between gap-3.5 rounded-lg border border-l-[3px] p-[13px_16px] transition-all duration-150 ${borderClass} ${hovered ? "border-[#2a2a4a] bg-[#202020]" : "border-[#1a1a30] bg-releet-card"}`}
     >
       <div className="min-w-0 flex-1">
         <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
