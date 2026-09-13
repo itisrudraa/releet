@@ -8,17 +8,20 @@ type Props = {
 
 export default function StatCard({ label, value, accent, bg, topBorder }: Props) {
   return (
-    <div style={{
-      flex: 1, background: bg, border: `1px solid ${topBorder}22`,
-      borderTop: `2px solid ${topBorder}CC`, borderRadius: "10px",
-      padding: "16px 18px 14px", display: "flex", flexDirection: "column", gap: "5px",
-    }}>
-      <span style={{ fontSize: "26px", fontWeight: 700, color: accent,
-        fontFamily: "'JetBrains Mono', monospace", letterSpacing: "-0.04em", lineHeight: 1 }}>
+    <div
+      className="flex flex-1 flex-col gap-1.5 rounded-[10px] border border-white/5 px-[18px] pb-3.5 pt-4"
+      style={{ background: bg, borderTop: `2px solid ${topBorder}CC` }}
+    >
+      <span
+        className="font-mono text-[26px] font-bold leading-none tracking-[-0.04em]"
+        style={{ color: accent }}
+      >
         {value}
       </span>
-      <span style={{ fontSize: "11px", color: accent + "70", letterSpacing: "0.09em",
-        textTransform: "uppercase", fontFamily: "'JetBrains Mono', monospace" }}>
+      <span
+        className="font-mono text-[11px] uppercase tracking-[0.09em]"
+        style={{ color: `${accent}70` }}
+      >
         {label}
       </span>
     </div>
