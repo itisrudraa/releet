@@ -1,8 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import "tailwindcss";
 
 html,
 body,
@@ -14,4 +10,11 @@ body,
 body {
   background: #0f0f0f;
   font-family: sans-serif;
+}
+
+@theme {
+  --color-releet-bg: #0f0f0f;
+  --color-releet-header: #111111;
+  --color-releet-card: #1a1a1a;
+  --color-releet-today: #151515;
 }
